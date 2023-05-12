@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" src="style.css" />
+    <title>PDF Generator - Weather Overview</title>
+  </head>
+  <body>
+    <iframe
+      id="myIframe"
+      src=""
+      scrolling="no"
+      style="border: 1px; border-radius: 20px"
+      height="420"
+      width="450"
+      title="pdfGenerator"
+    ></iframe>
+    <script>
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const station = urlParams.get("station");
+      console.log(station);
+      const myUrl = new URL(
+        "http://localhost:8888/pdfGenerator/index.php?station=" + station
+      );
+      let myIframe = document.getElementById("myIframe");
+      let url_string = myUrl;
+      let adsURL = url_string;
+      myIframe.src = adsURL;
+    </script>
+  </body>
+</html>
