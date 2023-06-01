@@ -1,3 +1,7 @@
+<?php
+include "config.php";
+?>
+
 <head>
   <title>Weather data overview - PDF Generator</title>
   <link rel="stylesheet" href="style.css" type="text/css">
@@ -24,18 +28,31 @@
         </div>
         <div class="select-container">
           <select class="select" id="months" name="months">
-            <option value="01">Enero</option>
-            <option value="02">Febrero</option>
-            <option value="03">Marzo</option>
-            <option value="04">Abril</option>
-            <option value="05">Mayo</option>
-            <option value="06">Junio</option>
-            <option value="07">Julio</option>
-            <option value="08">Agosto</option>
-            <option value="09">Septiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>
+            <?php
+            $query = "SELECT DISTINCT MONTH(Data) as month FROM wp_weatherlink";
+            $result = mysqli_query($conn, $query);
+
+            $spanishMonthNames = array(
+              'Enero',
+              'Febrero',
+              'Marzo',
+              'Abril',
+              'Mayo',
+              'Junio',
+              'Julio',
+              'Agosto',
+              'Septiembre',
+              'Octubre',
+              'Noviembre',
+              'Diciembre'
+            );
+
+            while ($row = mysqli_fetch_assoc($result)) {
+              $month = $row['month'];
+              $monthName = $spanishMonthNames[$month - 1];
+              echo "<option value=\"$month\">$monthName</option>";
+            }
+            ?>
           </select>
         </div>
       </div><br>
@@ -50,10 +67,18 @@
             <?php
             $startYear = 2010;
             $currentYear = date('Y');
-            for ($i = $currentYear; $i >= $startYear; $i--) {
-              echo "<option value=\"$i\">$i</option>";
+
+            // Assuming you have a database connection and a table named 'weather_data'
+// Modify the query according to your database structure
+            $query = "SELECT DISTINCT YEAR(Data) as year FROM wp_weatherlink ORDER BY year DESC";
+            $result = mysqli_query($conn, $query);
+
+            while ($row = mysqli_fetch_assoc($result)) {
+              $year = $row['year'];
+              echo "<option value=\"$year\">$year</option>";
             }
             ?>
+
           </select>
         </div>
       </div><br>
